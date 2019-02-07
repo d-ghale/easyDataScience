@@ -2,40 +2,21 @@
 % Please edit documentation in R/datascience.R
 \name{install_packages}
 \alias{install_packages}
-\title{Function to print tidy version of "summary" function
-This function converts input temperatures in Fahrenheit to Kelvin.}
+\title{Function to load packages already installed otherwise install then load}
 \usage{
 install_packages(pkg)
 }
 \arguments{
 \item{pkg}{name of packages as a vector}
-
-\item{summary_dcount}{gives distinct numbers}
-
-\item{summary_numbers}{gives summary of numeric variables}
-
-\item{summary_dates}{gives summary of date variables}
-
-\item{join_summary}{uses summary_numbers and summary_dates to give a tidy summary}
-
-\item{join_summary}{uses summary_numbers and summary_dates to give a tidy summary}
 }
 \value{
-distinct numbers, and basic statistics for each variable in the data
-
-distinct numbers, and basic statistics for each variable in the data
+install necessary packages and load them
 }
 \description{
-Function to print tidy version of "summary" function
-This function converts input temperatures in Fahrenheit to Kelvin.
+Function to load packages already installed otherwise install then load
 }
 \examples{
-tidy_summary(data)
-
-
-Load necessary packages
-This function loads packages without warnings 
-tidy_summary(data)
-
-
+install_packages(packages)
+check if packages are already installed
+load the packges
 }

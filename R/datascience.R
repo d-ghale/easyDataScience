@@ -1,52 +1,46 @@
-#' Function to print tidy version of "summary" function
-#' This function converts input temperatures in Fahrenheit to Kelvin.
-#' @param summary_dcount gives distinct numbers
-#' @param summary_numbers gives summary of numeric variables
-#' @param summary_dates gives summary of date variables
-#' @param join_summary uses summary_numbers and summary_dates to give a tidy summary
-#' @return distinct numbers, and basic statistics for each variable in the data
+
+#' Function to load packages already installed otherwise install then load
+#' @param pkg name of packages as a vector
+#' @return install necessary packages and load them
 #' @export
 #' @examples
-#' tidy_summary(data)
-#'
-#'
-#' Load necessary packages
-#' This function loads packages without warnings 
-#' @param pkg name of packages as a vector 
-#' @param join_summary uses summary_numbers and summary_dates to give a tidy summary
-#' @return distinct numbers, and basic statistics for each variable in the data
-#' @export
-#' @examples
-#' tidy_summary(data)
-#'
-#'
+#' install_packages(packages)
+
 install_packages <- function(pkg){
-	# check if packages are already installed 
+	#' check if packages are already installed
 	new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
-	# load the packges 
+	#' load the packges
 	if (length(new.pkg))
 		install.packages(new.pkg, dependencies = TRUE)
 	sapply(pkg, require, character.only = TRUE)
 }
 
+#' Load necessary packages
+#' This function loads packages without warnings
+#' @param pkg name of packages as a vector
+#' @param join_summary uses summary_numbers and summary_dates to give a tidy summary
+#' @return distinct numbers, and basic statistics for each variable in the data
+#' @export
+#' @examples
+#' tidy_packages(packages)
+
 tidy_packages <- function(pkg){
 	suppressWarnings(suppressMessages(install_packages(pkg)))
 }
 
-
-# usage
-packages <- c("plyr", "dplyr", "readr", "tidyr", "ggplot2",	"data.table", "lubridate",	"dataPreparation", "corrplot",
+#' usage
+packages <- c("plyr", "tidyverse",	"data.table", "lubridate",	"dataPreparation", "corrplot",
 							"ROCR", "pROC",	"randomForest",	"caret",	"e1071", "randomForestExplainer", "rmarkdown", "gridExtra",
 							"reprtree", "IRdisplay")
-
 tidy_packages(packages)
+
 
 #' install.packages(c("devtools", "roxygen2"))
 #' tidy_packages(c("devtools", "roxygen2"))
 #' roxygen2 package provides an in-source documentation system that automatically generates R documentation (Rd) files
 #' setwd(parentDirectory)
 #' devtools::create("easyDataScience")
-#' redo document() to update as needed 
+#' redo document() to update as needed
 #' setwd("./easyDataScience")
 #' Run devtools::document() to convert roxygen comments to .Rd files.
 #' setwd("..")
@@ -54,16 +48,14 @@ tidy_packages(packages)
 #' easyDataScience environment that is the parent environment to the global environment.
 #' search()
 
-#' Load necessary packages
-#' @param pkg name of packages as a vector 
-#' @param join_summary uses summary_numbers and summary_dates to give a tidy summary
-#' @return distinct numbers, and basic statistics for each variable in the data
+#' Load data
+#' @param file name of file along with its location
+#' @return loads the data
 #' @export
 #' @examples
-#' tidy_summary(data)
-#'
-#'
-#' Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names 
+#' df <- load_datatable("~/Documents/data.csv")
+
+#' Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names
 load_datatable <- function( file ) {
 	fread(file = file,
 				na.strings = c("", "NA"),
@@ -87,12 +79,12 @@ summary_dcount <- function(data) {
 	names(summary_data)[1] <- "Variable"
 	data.frame(lapply(summary_data, trimws), stringsAsFactors = FALSE)
 }
-
+#'
 #' compute basic statistics for date types
 #'
 #' first of all find all of the columns that are dates
 #' r doesn't have a simple function for that so we will build our own function
-#' 
+#'
 is_date <- function(x) {
 	require(lubridate)
 	if (class(x) == "data.frame")	warning("x is not a array")
@@ -176,6 +168,17 @@ handle_name <- function(data){
 	}
 }
 
+#' Function to print tidy version of "summary" function
+#' This function converts input temperatures in Fahrenheit to Kelvin.
+#' @param summary_dcount gives distinct numbers
+#' @param summary_numbers gives summary of numeric variables
+#' @param summary_dates gives summary of date variables
+#' @param join_summary uses summary_numbers and summary_dates to give a tidy summary
+#' @return distinct numbers, and basic statistics for each variable in the data
+#' @export
+#' @examples
+#' tidy_summary(data)
+
 tidy_summary <- function(data){
 	dcount_data <- data.frame(summary_dcount(copy(data)))
 	numbers_data <- data.frame(handle_name(join_summary(copy(data))))
@@ -191,8 +194,8 @@ tidy_summary <- function(data){
 			merge(dcount_data, merge(logicals_data, numbers_data, by = "Variable", all = TRUE) , by = "Variable", all = TRUE)
 		}
 	}
-	# characters and logical data types don't have min, median, etc. which can be replaced with a dash "-" instead of NAs
-	full_summary  %>% 
+	#' characters and logical data types don't have min, median, etc. which can be replaced with a dash "-" instead of NAs
+	full_summary  %>%
 		replace(., is.na(.), "-")
 }
 
@@ -214,12 +217,12 @@ unique_keys_one <- function(data, ...) {
 #' #' @param data name of the dataframe/datatable
 #' @param ... a column name or a vector with multiple names
 #' @example  unique_keys_more(df, c("col1", "col2"))
-#' 
+#'
 unique_keys_more <- function(data, ...) {
 	distinct_(data[,...]) #' print as column format
 }
 
-#' We must impute the missing data in a variable 
+#' We must impute the missing data in a variable
 #' We can remove the entire row (avoid if relatively small data size), replace with either 0 or mean/median value of all the available variable
 #' It is okay to replace NA with 0 when counting the values
 
@@ -268,8 +271,8 @@ convert_all_numeric <- function( data ) {
 
 factor_func <- function(data, ...){
 	factor_cols <- data[, list(...)]
-	for ( k in seq_along( factor_cols ) ) 
-		set(factor_cols, j = k, value = as.factor(as.character(factor_cols[[ k ]]))) 
+	for ( k in seq_along( factor_cols ) )
+		set(factor_cols, j = k, value = as.factor(as.character(factor_cols[[ k ]])))
 	data <- data[, names( factor_cols ) := factor_cols ]
 	data <- factor_is_rejected(data)
 	data
@@ -347,34 +350,17 @@ log_odds_prob <- function(model){
 	cbind(Probability = round(odds_predictor/(1 + odds_predictor), 4), round(confint_odds_predictor/(1 + confint_odds_predictor), 4))
 }
 
-rf_code <- getModelInfo("rf", regex = FALSE)[[1]]
-
-#' we are trying to solve a classification problem
-rf_code$type <- c("Classification")
-
-#' add two parameters: number of trees and threshold
-rf_code$parameters <- data.frame(parameter = c("mtry", "ntree", "threshold"),
-	class = rep("numeric", 3),
-	label = c("No. Randomly Selected Predictors", "No. Trees", "Probability Cutoff"))
-rf_code$grid <- function(x, y, len = NULL, search = "grid") {}
-rf_code$fit <- function(x, y, wts, param, lev, last, weights, classProbs, ...) {
-	randomForest(x, y,
-		mtry = param$mtry,
-		ntree = param$ntree,
-		threshold = param$threshold, ...)
-}
-
-#' This function saves the data 
-#' @param data write the name of data 
-#' @param file_location write the location where to save the data and in which format 
+#' This function saves the data
+#' @param data write the name of data
+#' @param file_location write the location where to save the data and in which format
 #' @return saves data as the format defined in file_location
 #' @export
-#' @examples save the data after data wrangling and manipulation: '~/Documents/[folders]/[file_name.csv]' 
-#' 
+#' @examples save the data after data wrangling and manipulation: '~/Documents/[folders]/[file_name.csv]'
+#'
 save_data <- function(data, file_location){
 	fwrite(data, file = file_location, quote = TRUE, row.names = FALSE)
-} 
+}
 
-# how to publish data
-
+#' how to publish data
+#' R CMD check --as-cran easyDataScience_0.0.0.9000.tar.gz
 

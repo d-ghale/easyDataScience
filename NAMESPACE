@@ -3,3 +3,5 @@
 export(install_packages)
 export(load_datatable)
 export(save_data)
+export(tidy_packages)
+export(tidy_summary)

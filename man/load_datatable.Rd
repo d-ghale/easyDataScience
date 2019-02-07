@@ -7,23 +7,22 @@ tidy_packages(c("devtools", "roxygen2"))
 roxygen2 package provides an in-source documentation system that automatically generates R documentation (Rd) files
 setwd(parentDirectory)
 devtools::create("easyDataScience")
+redo document() to update as needed
 setwd("./easyDataScience")
 Run devtools::document() to convert roxygen comments to .Rd files.
 setwd("..")
 install("easyDataScience")
 easyDataScience environment that is the parent environment to the global environment.
 search()
-Load necessary packages}
+Load data}
 \usage{
 load_datatable(file)
 }
 \arguments{
-\item{pkg}{name of packages as a vector}
-
-\item{join_summary}{uses summary_numbers and summary_dates to give a tidy summary}
+\item{file}{name of file along with its location}
 }
 \value{
-distinct numbers, and basic statistics for each variable in the data
+loads the data
 }
 \description{
 install.packages(c("devtools", "roxygen2"))
@@ -31,17 +30,16 @@ tidy_packages(c("devtools", "roxygen2"))
 roxygen2 package provides an in-source documentation system that automatically generates R documentation (Rd) files
 setwd(parentDirectory)
 devtools::create("easyDataScience")
+redo document() to update as needed
 setwd("./easyDataScience")
 Run devtools::document() to convert roxygen comments to .Rd files.
 setwd("..")
 install("easyDataScience")
 easyDataScience environment that is the parent environment to the global environment.
 search()
-Load necessary packages
+Load data
 }
 \examples{
-tidy_summary(data)
-
-
-Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names 
+df <- load_datatable("~/Documents/data.csv")
+Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names
 }
