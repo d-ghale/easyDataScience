@@ -227,13 +227,16 @@ unique_keys_more <- function(data, ...) {
 #' It is okay to replace NA with 0 when counting the values
 
 #' replace NAs with 0 for integers and replace NAs with "missing" in character columns
-handle_NA <- function( data ) {
-	dataPreparation::fastHandleNa(data, set_num = 0,
-		set_logical = FALSE,
-		set_char = "missing")
+handle_NA <- function( data, set_num = 0, set_logical = FALSE, set_char = "missing" ) {
+	if(is.character(set_num) == TRUE) {
+		set_formula <- paste0(set_num, "(x, na.rm = TRUE)", collapse = "")
+		set_num <- function(x) eval(set_formula)
+	}
+	dataPreparation::fastHandleNa(data, set_num = set_num,
+		set_logical = set_logical,
+		set_char = set_char)
 	data
 }
-
 
 #' we need another function to replace "NA" because NA as string is not treated as NA
 replace_NA <- function( data ) {
@@ -267,7 +270,6 @@ convert_all_numeric <- function( data ) {
 	col_numeric <- data
 	col_numeric[, names( col_numeric ) := lapply(.SD, as.numeric ) ]
 }
-
 
 factor_func <- function(data, ...){
 	factor_cols <- data[, list(...)]

@@ -1,0 +1,83 @@
+---
+title: "titanic"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+devtools::install_github("d-ghale/easyDataScience")
+library("easyDataScience")
+
+packages <- c("plyr", "tidyverse",	"data.table", "lubridate",	"dataPreparation", "corrplot", "ROCR", "pROC",	"randomForest",	"caret",	"e1071", "randomForestExplainer", "rmarkdown", "gridExtra", "titanic")
+tidy_packages(packages)
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+df <- data.table::as.data.table(titanic_train)
+head(df)
+dim(df)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+
+df_no_dup <- easyDataScience:::remove_duplicate_rows(df)
+
+dim(df_no_dup)
+
+tidy_summary(copy(df))
+
+```
+```{r}
+lapply(1:ncol(df), function(x) anyNA(df[, ..x]))
+```
+Only column number 6, i.e. Age has NA. 177 rows have NA out of 891 rows so it is not helpful to remove those rows. 
+
+
+```{r}
+names(df[,6])
+
+sum(is.na(df$Age))
+
+head(arrange(df, Age), 20)
+```
+
+```{r}
+df2 <- fastHandleNa(copy(df), set_num = function(x) mean(x, na.rm = TRUE) )
+
+```
+
+```{r}
+lapply(1:ncol(df2), function(x) anyNA(df2[, ..x]))
+```
+
+
+```{r}
+paste0("mean", "(x, na.rm = TRUE)", collapse = "")
+
+handle_NA <- function( data, set_num = 0, set_logical = FALSE, set_char = "missing" ) {
+	set_formula <- if(is.character(set_num) == TRUE) {
+										paste0(set_num, "(x, na.rm = TRUE)", collapse = "")
+								} else {
+									set_num
+								}
+	dataPreparation::fastHandleNa(data, set_num = eval(set_formula),
+		set_logical = set_logical,
+		set_char = set_char)
+	data
+}
+
+df <- handle_NA(df, set_num = "mean")
+
+```
+
