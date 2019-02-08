@@ -2,7 +2,7 @@
 % Please edit documentation in R/datascience.R
 \name{handle_NA}
 \alias{handle_NA}
-\title{We must impute the missing data in a variable 
+\title{We must impute the missing data in a variable
 We can remove the entire row (avoid if relatively small data size), replace with either 0 or mean/median value of all the available variable
 It is okay to replace NA with 0 when counting the values
 replace NAs with 0 for integers and replace NAs with "missing" in character columns}
@@ -10,7 +10,7 @@ replace NAs with 0 for integers and replace NAs with "missing" in character colu
 handle_NA(data)
 }
 \description{
-We must impute the missing data in a variable 
+We must impute the missing data in a variable
 We can remove the entire row (avoid if relatively small data size), replace with either 0 or mean/median value of all the available variable
 It is okay to replace NA with 0 when counting the values
 replace NAs with 0 for integers and replace NAs with "missing" in character columns
