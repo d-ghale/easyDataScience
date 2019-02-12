@@ -7,7 +7,8 @@ We can remove the entire row (avoid if relatively small data size), replace with
 It is okay to replace NA with 0 when counting the values
 replace NAs with 0 for integers and replace NAs with "missing" in character columns}
 \usage{
-handle_NA(data)
+handle_NA(data, set_num = 0, set_logical = FALSE,
+  set_char = "missing")
 }
 \description{
 We must impute the missing data in a variable

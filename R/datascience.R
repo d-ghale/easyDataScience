@@ -29,20 +29,21 @@ tidy_packages <- function(pkg){
 }
 
 #' usage
-packages <- c("plyr", "tidyverse",	"data.table", "lubridate",	"dataPreparation", "corrplot",
-							"ROCR", "pROC",	"randomForest",	"caret",	"e1071", "randomForestExplainer", "rmarkdown", "gridExtra",
-							"reprtree", "IRdisplay")
-tidy_packages(packages)
+packages <- c("plyr", "ggplot2", "tidyverse",	"data.table", "lubridate", "openxlsx", "stringr", "dataPreparation",
+							"corrplot",	"ROCR", "pROC",	"randomForest",	"caret",	"e1071", "randomForestExplainer", "rmarkdown",
+							"gridExtra", "reprtree", "IRdisplay", "bit64")
+#' xlsx --  requires rJava package
 
+tidy_packages(packages)
 
 #' install.packages(c("devtools", "roxygen2"))
 #' tidy_packages(c("devtools", "roxygen2"))
 #' roxygen2 package provides an in-source documentation system that automatically generates R documentation (Rd) files
 #' setwd(parentDirectory)
 #' devtools::create("easyDataScience")
-#' redo document() to update as needed
 #' setwd("./easyDataScience")
 #' Run devtools::document() to convert roxygen comments to .Rd files.
+#' redo document() to update as needed
 #' setwd("..")
 #' install("easyDataScience")
 #' easyDataScience environment that is the parent environment to the global environment.
@@ -53,15 +54,34 @@ tidy_packages(packages)
 #' @return loads the data
 #' @export
 #' @examples
-#' df <- load_datatable("~/Documents/data.csv")
+#' dt <- load_datatable("~/Documents/data.csv")
+#' excel <- load_excel("~/Documents/data.xlsx")
 
 #' Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names
 load_datatable <- function( file ) {
+	require("data.table")
 	fread(file = file,
 				na.strings = c("", "NA"),
 				check.names = TRUE)
 }
 
+#' Function to load excel file: replaces blank space by NA using na.string and check if there are duplicate column names
+load_excel <- function( file, check.names = FALSE ) {
+	require("openxlsx")
+	read.xlsx(file, check.names = check.names,
+						detectDates = TRUE)
+}
+
+#' This function saves the data
+#' @param data write the name of data
+#' @param file_location write the location where to save the data and in which format
+#' @return saves data as the format defined in file_location
+#' @export
+#' @examples save the data after data wrangling and manipulation: '~/folders/file_name.csv'
+#'
+save_data <- function(data, file_location){
+	fwrite(data, file = file_location, quote = TRUE, row.names = FALSE)
+}
 #' The first thing we do is calculate basic statistics like mean, median, max to get a sense of what data we are looking at.
 #' summary() function is only useful for numeric and logical type variables
 #' cannot compute mean, median, etc, on character and logical types
@@ -207,19 +227,27 @@ remove_duplicate_rows <- function( data ) {
 #' Function that prints distinct values based on one variable
 #' @param data name of the dataframe/datatable
 #' @param ... a column name or a vector with multiple names
-#
+
 unique_keys_one <- function(data, ...) {
 	distinct_(data[,...]) %>%
 		pull(...) #' print as a vector instead of a column format
 }
 
 #' Function that prints distinct values based on more than one group
-#' #' @param data name of the dataframe/datatable
+#'  @param data name of the dataframe/datatable
 #' @param ... a column name or a vector with multiple names
-#' @example  unique_keys_more(df, c("col1", "col2"))
+#' @example unique_keys_more(df, c("col1", "col2"))
 #'
 unique_keys_more <- function(data, ...) {
 	distinct_(data[,...]) #' print as column format
+}
+
+#' Function that counts number of rows and percentage based on group/s
+
+count_per_group <- function(data, ...){
+	data %>%
+		group_by(...) %>%
+		summarise(n = n(), percentage = round((n*100)/nrow(data), 2))
 }
 
 #' We must impute the missing data in a variable
@@ -352,16 +380,6 @@ log_odds_prob <- function(model){
 	cbind(Probability = round(odds_predictor/(1 + odds_predictor), 4), round(confint_odds_predictor/(1 + confint_odds_predictor), 4))
 }
 
-#' This function saves the data
-#' @param data write the name of data
-#' @param file_location write the location where to save the data and in which format
-#' @return saves data as the format defined in file_location
-#' @export
-#' @examples save the data after data wrangling and manipulation: '~/Documents/[folders]/[file_name.csv]'
-#'
-save_data <- function(data, file_location){
-	fwrite(data, file = file_location, quote = TRUE, row.names = FALSE)
-}
 
 #' how to publish data
 #' R CMD check --as-cran easyDataScience_0.0.0.9000.tar.gz

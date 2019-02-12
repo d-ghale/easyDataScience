@@ -4,7 +4,7 @@
 \name{packages}
 \alias{packages}
 \title{usage}
-\format{An object of class \code{character} of length 16.}
+\format{An object of class \code{character} of length 20.}
 \usage{
 packages
 }

@@ -5,6 +5,7 @@ output: html_document
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+#, type = "source"
 devtools::install_github("d-ghale/easyDataScience")
 library("easyDataScience")
 
@@ -78,6 +79,36 @@ handle_NA <- function( data, set_num = 0, set_logical = FALSE, set_char = "missi
 }
 
 df <- handle_NA(df, set_num = "mean")
+
+```
+
+```{r}
+
+df2 %>% group_by(Sex) %>% summarise(n_Age = length(Age))
+
+```
+
+```{r}
+# Function that counts number of observation of col_count based on group/s 
+count_keys <- function(data, col_count, ...) {
+	data <- data.table(data)
+	paste_formula <- paste0("length(", col_count, ")", collapse = NULL)
+	data %>% group_by(...) %>% summarize(count = eval(parse(text = (paste_formula))))
+}
+
+count_keys(data = df2, col_count = "Age", Sex)
+
+```
+
+```{r}
+df2 <- data.table(df2)
+
+
+df2[, n_Age := length(Age), by = .(Sex)]
+
+
+	data <- data[, (count) := eval(parse(text = (paste_formula))), by = eval((...))] 
+	data
 
 ```
 

@@ -3,7 +3,7 @@
 \name{unique_keys_more}
 \alias{unique_keys_more}
 \title{Function that prints distinct values based on more than one group
-#' @param data name of the dataframe/datatable}
+ @param data name of the dataframe/datatable}
 \usage{
 unique_keys_more(data, ...)
 }
@@ -12,5 +12,5 @@ unique_keys_more(data, ...)
 }
 \description{
 Function that prints distinct values based on more than one group
-#' @param data name of the dataframe/datatable
+ @param data name of the dataframe/datatable
 }

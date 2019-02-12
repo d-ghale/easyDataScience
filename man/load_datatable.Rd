@@ -40,6 +40,7 @@ search()
 Load data
 }
 \examples{
-df <- load_datatable("~/Documents/data.csv")
+dt <- load_datatable("~/Documents/data.csv")
+excel <- load_excel("~/Documents/data.xlsx")
 Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names
 }

@@ -18,6 +18,6 @@ saves data as the format defined in file_location
 This function saves the data
 }
 \examples{
-save the data after data wrangling and manipulation: '~/Documents/[folders]/[file_name.csv]'
+save the data after data wrangling and manipulation: '~/folders/file_name.csv'
 
 }
