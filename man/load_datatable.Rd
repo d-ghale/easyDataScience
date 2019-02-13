@@ -7,9 +7,9 @@ tidy_packages(c("devtools", "roxygen2"))
 roxygen2 package provides an in-source documentation system that automatically generates R documentation (Rd) files
 setwd(parentDirectory)
 devtools::create("easyDataScience")
-redo document() to update as needed
 setwd("./easyDataScience")
 Run devtools::document() to convert roxygen comments to .Rd files.
+redo document() to update as needed
 setwd("..")
 install("easyDataScience")
 easyDataScience environment that is the parent environment to the global environment.
@@ -30,9 +30,9 @@ tidy_packages(c("devtools", "roxygen2"))
 roxygen2 package provides an in-source documentation system that automatically generates R documentation (Rd) files
 setwd(parentDirectory)
 devtools::create("easyDataScience")
-redo document() to update as needed
 setwd("./easyDataScience")
 Run devtools::document() to convert roxygen comments to .Rd files.
+redo document() to update as needed
 setwd("..")
 install("easyDataScience")
 easyDataScience environment that is the parent environment to the global environment.

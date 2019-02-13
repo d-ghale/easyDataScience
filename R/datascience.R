@@ -27,7 +27,6 @@ install_packages <- function(pkg){
 tidy_packages <- function(pkg){
 	suppressWarnings(suppressMessages(install_packages(pkg)))
 }
-
 #' usage
 packages <- c("plyr", "ggplot2", "tidyverse",	"data.table", "lubridate", "openxlsx", "stringr", "dataPreparation",
 							"corrplot",	"ROCR", "pROC",	"randomForest",	"caret",	"e1071", "randomForestExplainer", "rmarkdown",
@@ -59,16 +58,14 @@ tidy_packages(packages)
 
 #' Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names
 load_datatable <- function( file ) {
-	require("data.table")
-	fread(file = file,
+	data.table::fread(file = file,
 				na.strings = c("", "NA"),
 				check.names = TRUE)
 }
 
 #' Function to load excel file: replaces blank space by NA using na.string and check if there are duplicate column names
 load_excel <- function( file, check.names = FALSE ) {
-	require("openxlsx")
-	read.xlsx(file, check.names = check.names,
+	openxlsx::read.xlsx(file, check.names = check.names,
 						detectDates = TRUE)
 }
 
@@ -80,7 +77,7 @@ load_excel <- function( file, check.names = FALSE ) {
 #' @examples save the data after data wrangling and manipulation: '~/folders/file_name.csv'
 #'
 save_data <- function(data, file_location){
-	fwrite(data, file = file_location, quote = TRUE, row.names = FALSE)
+	data.table::fwrite(data, file = file_location, quote = TRUE, row.names = FALSE)
 }
 #' The first thing we do is calculate basic statistics like mean, median, max to get a sense of what data we are looking at.
 #' summary() function is only useful for numeric and logical type variables
@@ -116,7 +113,7 @@ summary_dates <- function(data){
 	if (nrow(date_data) > 0){
 		cols <- colnames(date_data)
 		#' covert all of the dates into one format for consistency
-		setColAsDate(date_data, cols = cols, format = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"))
+		dataPreparation::setColAsDate(date_data, cols = cols, format = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"))
 		summary_table <- summary(date_data)
 		#' We can't use ":" to separate like in summary_numbers() because of %H:%M:%S in the column
 		#' Therefore we are using the regular expression to split using the first occurance of ":" and keeping the remaining values
@@ -196,8 +193,7 @@ handle_name <- function(data){
 #' @param join_summary uses summary_numbers and summary_dates to give a tidy summary
 #' @return distinct numbers, and basic statistics for each variable in the data
 #' @export
-#' @examples
-#' tidy_summary(data)
+#' @examples tidy_summary(data)
 
 tidy_summary <- function(data){
 	dcount_data <- data.frame(summary_dcount(copy(data)))
@@ -240,6 +236,13 @@ unique_keys_one <- function(data, ...) {
 #'
 unique_keys_more <- function(data, ...) {
 	distinct_(data[,...]) #' print as column format
+}
+
+
+# Function that counts number of observation of key based on group/s
+count_keys_per_group <- function(data, col_key, ...) {
+	new_name <- paste0("n_", col_key, collapse = "")
+	data[, new_name := length(col_key), by = .(...) ]
 }
 
 #' Function that counts number of rows and percentage based on group/s
