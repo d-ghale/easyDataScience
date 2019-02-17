@@ -1,9 +1,11 @@
 Package: easyDataScience
-Title: What the Package Does (one line, title case)
+Title: Data Exploration and Data Modeling made easy
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Doma", "Ghale", email = "domaghale.16@gmail.com", role = c("aut", "cre"))
+Description: Built-in functions to make some of the fundamental steps in data exploration and modeling easily available. With any data science preoject the first thing we do is calculate basic statistics like mean, median, max to get a sense of what data we are looking at. However the base summary() function is only useful for numeric and logical type variables since we cannot compute mean, median, etc, on character and logical types. Therefore we added the count of unique values in the summary(). Also the functions' output is not in tidy format. We transform each variable as a row and each type of statistics as a column with its corresponding value. 
 Depends: R (>= 3.5.1)
+Imports: plyr, ggplot2, tidyverse, data.table, lubridate, openxlsx, stringr, dataPreparation, corrplot, caret, e1071, rmarkdown, gridExtra, bit64
+Suggests:  ROCR, pROC, randomForest, randomForestExplainer, reprtree, IRdisplay
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
