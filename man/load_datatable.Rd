@@ -9,7 +9,7 @@ load_datatable(file, check.names = TRUE)
 \arguments{
 \item{file}{name of file along with its location}
 
-\item{check.names}{should names starting with a number, or that are duplicated treated? TRUE or FALSE}
+\item{check.names}{should names starting with a number, or that are duplicated be treated? TRUE or FALSE}
 }
 \value{
 loads the data as data.table

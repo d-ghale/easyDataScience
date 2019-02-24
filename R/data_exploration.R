@@ -13,6 +13,21 @@ summary_dcount <- function(data) {
 	data.frame(lapply(summary_data, trimws), stringsAsFactors = FALSE)
 }
 
+#' Function compute basic statistics for numeric types
+#'
+#' @param data name
+#' @return  TRUE or FALSE whether variable is of date type
+#' @export
+summary_numbers <- function(data) {
+	numeric_data <- data[, lapply(data, is.numeric) == TRUE, with = FALSE]
+	summary_table <- data.frame(summary(numeric_data))
+	summary_table <- summary_table  %>%
+		tidyr::separate(Freq, c("type", "value"), ":") %>%
+		dplyr::select(- Var1)
+	summary_table$value <- round(as.numeric(summary_table$value), 2)
+	summary_table
+}
+
 #' Function checks whether a variable in the data is of date type or not. r doesn't have a simple function for that so we will build our own function
 #'
 #' @param x variable as one-dimensional array
@@ -43,21 +58,6 @@ summary_dates <- function(data){
 	} else {
 		date_data
 	}
-}
-
-#' Function compute basic statistics for numeric types
-#'
-#' @param data name
-#' @return  TRUE or FALSE whether variable is of date type
-#' @export
-summary_numbers <- function(data) {
-	numeric_data <- data[, lapply(data, is.numeric) == TRUE, with = FALSE]
-	summary_table <- data.frame(summary(numeric_data))
-	summary_table <- summary_table  %>%
-		tidyr::separate(Freq, c("type", "value"), ":") %>%
-		dplyr::select(- Var1)
-	summary_table$value <- round(as.numeric(summary_table$value), 2)
-	summary_table
 }
 
 #' Function combines the summary of date and numeric variables

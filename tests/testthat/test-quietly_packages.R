@@ -1,6 +1,6 @@
 context("Packages")
 
-pkg <- "random11"
+# pkg <- "dplyr"
 
 suppressMessages(install.packages(pkg))
 quietly_packages(pkg, suppress = "messages")

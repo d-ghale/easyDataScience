@@ -53,7 +53,7 @@ convert_all_numeric <- function( data ) {
 #' @param ... list of variables to factorize
 #' @export
 factor_func <- function(data, ...){
-	factor_cols <- data[, list(...)]
+	factor_cols <- data[, ...]
 	for ( k in seq_along( factor_cols ) )
 		set(factor_cols, j = k, value = as.factor(as.character(factor_cols[[ k ]])))
 	data <- data[, names( factor_cols ) := factor_cols ]

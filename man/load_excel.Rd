@@ -4,7 +4,7 @@
 \alias{load_excel}
 \title{Function to load excel file: check if there are duplicate column names and find columns that are dates}
 \usage{
-load_excel(file, check.names = FALSE)
+load_excel(file, check.names = FALSE, detectDates = TRUE)
 }
 \arguments{
 \item{file}{name of excel file along with its location}
