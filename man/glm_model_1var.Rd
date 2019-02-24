@@ -2,11 +2,13 @@
 % Please edit documentation in R/data_modeling.R
 \name{glm_model_1var}
 \alias{glm_model_1var}
-\title{This function loads packages without warnings}
+\title{Function writes a logistic regression model}
 \usage{
 glm_model_1var(data)
 }
 \arguments{
+\item{data}{after passing trans_vars_func()}
+
 \item{pkg}{name of packages as a vector}
 
 \item{join_summary}{uses summary_numbers and summary_dates to give a tidy summary}
@@ -15,5 +17,5 @@ glm_model_1var(data)
 distinct numbers, and basic statistics for each variable in the data
 }
 \description{
-This function loads packages without warnings
+Function writes a logistic regression model
 }

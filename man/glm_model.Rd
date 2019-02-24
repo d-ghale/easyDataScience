@@ -4,7 +4,7 @@
 \alias{glm_model}
 \title{Function to print logistic regression model using formula}
 \usage{
-glm_model(formula)
+glm_model(data, formula)
 }
 \arguments{
 \item{formula}{output ~ input}

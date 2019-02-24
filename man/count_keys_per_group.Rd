@@ -9,6 +9,8 @@ count_keys_per_group(data, col_key, ...)
 \arguments{
 \item{data}{name of the dataframe/datatable}
 
+\item{col_key}{count number of rows for each value in col_key}
+
 \item{...}{a column name or a vector with multiple names}
 }
 \description{

@@ -10,5 +10,5 @@ join_summary(data)
 \item{data}{name}
 }
 \description{
-Function combines the summary of date and numeric variables
+string with . at end gives odd results when removing whitespace, order columns in ascending order
 }

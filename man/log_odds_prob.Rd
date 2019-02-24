@@ -13,5 +13,5 @@ log_odds_prob(model)
 probability of coefficients of independent variables in logistic model
 }
 \description{
-Function takes logistic model and converts the coeficients in probability scale
+compute log odds to odds and confidence interval, then compute values of coefficients in probability scale
 }

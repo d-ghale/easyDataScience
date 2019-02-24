@@ -9,6 +9,9 @@ encoding_col(data, column)
 \arguments{
 \item{...}{list of variables to encode as dummy variable}
 }
+\value{
+one hot encode variables as logical values to avoid possible confusion as number
+}
 \description{
 Function that converts the given columns' values into individual column with TRUE or FALSE
 }

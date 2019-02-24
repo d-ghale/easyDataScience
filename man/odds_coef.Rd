@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_modeling.R
 \name{odds_coef}
 \alias{odds_coef}
-\title{Function takes logistic model and converts the coeficients in odds scale. Logistic regression model's coefficients give the change in the log odds of the outcome for a one unit increase in the predictor variable.}
+\title{Function takes logistic model and converts the coeficients in odds scale.}
 \usage{
 odds_coef(model)
 }
@@ -13,5 +13,5 @@ odds_coef(model)
 odds of coefficients of independent variables in logistic model
 }
 \description{
-Function takes logistic model and converts the coeficients in odds scale. Logistic regression model's coefficients give the change in the log odds of the outcome for a one unit increase in the predictor variable.
+Logistic regression model's coefficients give the change in the log odds of the outcome for a one unit increase in the predictor variable. So covert log odds to odds, and also compute 95% confidence interval using standard errors.
 }

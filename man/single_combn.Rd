@@ -7,8 +7,8 @@
 single_combn(data)
 }
 \value{
-keep the dependent variable as the first column
+create dataframe with nrow 2 and ncol ncol(df) - 1 such that the first row in each column is the dependent variable and the second row in each column is one of the independent variables
 }
 \description{
-This function produces all combinations of variables with the dependent variable
+Remember to keep the dependent variable as the first column
 }

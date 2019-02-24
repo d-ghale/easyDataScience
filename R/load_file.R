@@ -2,22 +2,35 @@
 #'
 #' @param pkg name of packages as a vector
 #' @return check if packages are already installed, install necessary packages and load them
-#' @import plyr ggplot2 tidyverse lubridate data.table openxlsx stringr dataPreparation corrplot caret e1071 rmarkdown gridExtra bit64
+#' @import plyr utils ggplot2 tidyverse lubridate data.table openxlsx stringr dataPreparation corrplot caret e1071 rmarkdown gridExtra bit64
 #' @export
-install_packages <- function(pkg){
+tidy_packages <- function(pkg){
 	new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
 	if(length(new.pkg)) {
-			install.packages(new.pkg, dependencies = TRUE)
+		utils::install.packages(new.pkg, dependencies = TRUE)
 		}
 	sapply(pkg, require, character.only = TRUE)
 }
-tidy_packages <- function(pkg){
-	easypackages::suppressWarnings(suppressMessages(install_packages(pkg)))
+
+#' Function to load packages without warnings
+#'
+#' @param pkg name of packages as a vector
+#' @export
+quietly_packages <- function(pkg, suppress = "both"){
+	stopifnot(suppress %in% c("both", "messages", "warnings"))
+	if(suppress == "warnings") {
+		suppressWarnings(utils::install.packages(pkg))
+	} else if (suppress == "messages") {
+		suppressMessages(utils::install.packages(pkg))
+	} else {
+		suppressWarnings(suppressMessages(utils::install.packages(pkg)))
+	}
 }
 
 #' Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names
 #'
 #' @param file name of file along with its location
+#' @param check.names should names starting with a number, or that are duplicated treated? TRUE or FALSE
 #' @return loads the data as data.table
 #' @export
 load_datatable <- function( file, check.names = TRUE) {

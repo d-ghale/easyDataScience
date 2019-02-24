@@ -11,6 +11,9 @@ unique_keys_one(data, ...)
 
 \item{...}{a column name or a vector with multiple names}
 }
+\value{
+print as a vector instead of a column format
+}
 \description{
 Function that prints distinct values based on one variable
 }

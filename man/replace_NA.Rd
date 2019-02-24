@@ -4,7 +4,7 @@
 \alias{replace_NA}
 \title{Function to replace "NA" because NA as string is not treated as NA}
 \usage{
-replace_NA(data, set_char)
+replace_NA(data, set_char = "missing")
 }
 \arguments{
 \item{set_char}{replace NULL values in "NA" by set_char}

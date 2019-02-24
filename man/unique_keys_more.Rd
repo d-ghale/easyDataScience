@@ -11,6 +11,9 @@ unique_keys_more(data, ...)
 
 \item{...}{a column name or a vector with multiple names}
 }
+\value{
+print as column format
+}
 \description{
 Function that prints distinct values based on more than one group
 }
