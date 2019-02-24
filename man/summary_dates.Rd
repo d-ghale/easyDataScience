@@ -10,8 +10,8 @@ summary_dates(data)
 \item{data}{name}
 }
 \value{
-TRUE or FALSE whether variable is of date type
+summary of date variables
 }
 \description{
-Function compute basic statistics for date types
+find columns that are dates using is_date() then covert all of the dates into one format for consistency. We can't use ":" to separate like in summary_numbers() because of %H:%M:%S in the column. Therefore we are using the regular expression to split using the first occurance of ":" and keeping the remaining values
 }

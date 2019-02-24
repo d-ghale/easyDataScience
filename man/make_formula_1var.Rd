@@ -2,18 +2,16 @@
 % Please edit documentation in R/data_modeling.R
 \name{make_formula_1var}
 \alias{make_formula_1var}
-\title{This function write a logistic regression model}
+\title{Function converts text format into formula format}
 \usage{
 make_formula_1var(data)
 }
 \arguments{
-\item{pkg}{name of packages as a vector}
-
-\item{join_summary}{uses summary_numbers and summary_dates to give a tidy summary}
+\item{data}{after passing trans_vars_func()}
 }
 \value{
-distinct numbers, and basic statistics for each variable in the data
+list of formulae with one-one pair of each independent variables with the dependent variable
 }
 \description{
-This function write a logistic regression model
+Function converts text format into formula format
 }

@@ -7,7 +7,7 @@
 is_date(x)
 }
 \arguments{
-\item{data}{name}
+\item{x}{variable as one-dimensional array}
 }
 \value{
 TRUE or FALSE whether variable is of date type

@@ -2,18 +2,13 @@
 % Please edit documentation in R/data_modeling.R
 \name{trans_vars_func}
 \alias{trans_vars_func}
-\title{This function loads packages without warnings}
+\title{This function creates a column with formula for the dependent variable with each of the independent variable}
 \usage{
 trans_vars_func(data)
 }
-\arguments{
-\item{pkg}{name of packages as a vector}
-
-\item{join_summary}{uses summary_numbers and summary_dates to give a tidy summary}
-}
 \value{
-get row and colnames in order,
+transpose the table created by single_combn then add a new column that has output ~ input structure
 }
 \description{
-This function loads packages without warnings
+This function creates a column with formula for the dependent variable with each of the independent variable
 }

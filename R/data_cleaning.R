@@ -4,7 +4,7 @@
 #' @return data without duplicated rows
 #' @export
 remove_duplicate_rows <- function( data ) {
-	distinct( data )
+	dplyr::distinct( data )
 }
 
 #' Function replace NAs with 0 for integers and replace NAs with "missing" in character columns
@@ -14,12 +14,14 @@ remove_duplicate_rows <- function( data ) {
 #' @param set_char replace NULL values in character type by set_num
 #' @return data without NULL values
 #' @export
+
 handle_NA <- function( data, set_num = 0, set_logical = FALSE, set_char = "missing" ) {
-	if(is.character(set_num) == TRUE) {
-		set_formula <- paste0(set_num, "(x, na.rm = TRUE)", collapse = "")
-		set_num <- function(x) eval(set_formula)
+	set_formula <- if(is.character(set_num) == TRUE) {
+		paste0("function(x)", set_num, "(x, na.rm = TRUE)", collapse = "")
+	} else {
+		set_num
 	}
-	dataPreparation::fastHandleNa(data, set_num = set_num,
+	dataPreparation::fastHandleNa(data, set_num = eval(parse(text = set_formula)),
 		set_logical = set_logical,
 		set_char = set_char)
 	data
@@ -29,11 +31,11 @@ handle_NA <- function( data, set_num = 0, set_logical = FALSE, set_char = "missi
 #'
 #' @param set_char replace NULL values in "NA" by set_char
 #' @export
-replace_NA <- function( data, set_char ) {
+replace_NA <- function( data, set_char = "missing" ) {
 	for ( k in names( data ) )
 		if( is.character( data[[ k ]] ) )
 			set(data,
-				i = which( data[[ k ]] == "NA" ) ,
+				i = which( data[[ k ]] %in% c("NA", "") ) ,
 				j = k,
 				value = set_char )
 	data
@@ -55,7 +57,6 @@ factor_func <- function(data, ...){
 	for ( k in seq_along( factor_cols ) )
 		set(factor_cols, j = k, value = as.factor(as.character(factor_cols[[ k ]])))
 	data <- data[, names( factor_cols ) := factor_cols ]
-	data <- factor_is_rejected(data)
 	data
 }
 
@@ -71,12 +72,23 @@ z_score_transform <- function(data, ...){
 #' Function that converts the given columns' values into individual column with TRUE or FALSE
 #'
 #' @param ... list of variables to encode as dummy variable
+#' @return  one hot encode variables as logical values to avoid possible confusion as number
 #' @export
 encoding_col <- function( data, column) {
-	encoding <<- build_encoding(data, cols = column )
-	one_hot_encoder(data, encoding = encoding,
-		type = "logical", #' avoid possible confusion as number
+	encoding <<- dataPreparation::build_encoding(data, cols = column )
+	dataPreparation::one_hot_encoder(data, encoding = encoding,
+		type = "logical",
 		drop = TRUE)
+}
+
+# lexicographic sorting compares character by character making 10 greater than 5
+# we made the function below to solve the problem
+
+leading_zero <- function(data, column){
+	width <- max(nchar(as.character(data[, ..column])))
+	data[, ..column] <- formatC(data[, ..column], width = width, flag = "0")
 	data
 }
+
+
 
