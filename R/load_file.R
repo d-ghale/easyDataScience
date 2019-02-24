@@ -15,6 +15,7 @@ tidy_packages <- function(pkg){
 #' Function to load packages without warnings
 #'
 #' @param pkg name of packages as a vector
+#' @param suppress warnings, messages or both
 #' @export
 quietly_packages <- function(pkg, suppress = "both"){
 	stopifnot(suppress %in% c("both", "messages", "warnings"))
@@ -30,7 +31,7 @@ quietly_packages <- function(pkg, suppress = "both"){
 #' Function to load a file: replaces blank space by NA using na.string and check if there are duplicate column names
 #'
 #' @param file name of file along with its location
-#' @param check.names should names starting with a number, or that are duplicated treated? TRUE or FALSE
+#' @param check.names should names starting with a number, or that are duplicated be treated? TRUE or FALSE
 #' @return loads the data as data.table
 #' @export
 load_datatable <- function( file, check.names = TRUE) {
@@ -44,8 +45,8 @@ load_datatable <- function( file, check.names = TRUE) {
 #' @param file name of excel file along with its location
 #' @return loads the data as excel
 #' @export
-load_excel <- function( file, check.names = FALSE ) {
-	openxlsx::read.xlsx(file, check.names = check.names, detectDates = TRUE)
+load_excel <- function( file, check.names = FALSE, detectDates = TRUE) {
+	openxlsx::read.xlsx(file, check.names = check.names, detectDates = detectDates)
 }
 
 #' Function saves the data, useful after data wrangling and manipulation
