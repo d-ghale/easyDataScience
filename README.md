@@ -3,15 +3,15 @@
 ## Why I created this package?
 
 This package is an attempt to perform data exploration performed commonly during the initial phase any data science project. 
-The first thing we do when we get data is calculate basic statistics like mean, median, max to get a sense of what data we are looking at. summary() function is only useful for numeric and logical type variables since we cannot compute mean, median, etc. on character and logical variables. Also the functions' output is not in a tidy format. Therefore I built several functions to end up with a tidier summary of data (transform each variable as a row and each type of statistics as a column with its corresponding value). 
+The first thing we do when we get data is calculate basic statistics like mean, median, max to get a sense of what data we are looking at. `summary()` function is only useful for numeric and logical type variables since we cannot compute mean, median, etc. on character and logical variables. Also the functions' output is not in a tidy format. Therefore I built several functions to end up with a tidier summary of data (transform each variable as a row and each type of statistics as a column with its corresponding value). 
 
 - For each of the variables in the data calculate the count of distinct values. This is helpful for character (text) variables. 
 
-- For logical variables count the total number of TRUE and FALSE in the data. R's logical test function `is.logical()` treats columns with all NAs as logical. I removed those columns from my summary_logicals function. 
+- For logical variables count the total number of TRUE and FALSE in the data. R's logical test function `is.logical()` treats columns with all NAs as logical. I removed those columns from my `summary_logicals()` function. 
 
 - For numbers calculate summary statistics such as min, max and mean to understand how spread out the data are around the average, how large the sample is, etc. This also helps us to quickly identify errors (e.g. negative values) and missing values.
 
-- For dates first of all find the variables that are of date type. r doesn't have a simple function for that so we will build our own function. 
+- For dates first of all find the variables that are of date type. R doesn't have a simple function for that so I build `is_date()`. 
 
 After performing basic statistics we need to impute missing variables. We can remove the entire row (avoid if relatively small data size), replace with either 0 or mean/median value of all the available variable. It is okay to replace NA with 0 when counting the values. For numeric variables, function `handle_NA` replaces NAs with 0 and for character variables the function replaces NAs with "missing". Sometimes we have NAs in string format "NA", which is not detected by base R's is.na function so we created another function (`replace_NA`) to replace "NA".  
 
