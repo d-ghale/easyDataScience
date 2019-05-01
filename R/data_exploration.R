@@ -6,7 +6,7 @@
 #' @export
 summary_dcount <- function(data) {
 	dcount_func <- function(x){
-		data.frame(count_distinct = dplyr::n_distinct(x))
+		data.frame(count_distinct = dplyr::n_distinct(x), None = sum(is.na(x)))
 	}
 	summary_data <- adply(data, 2, dcount_func )
 	names(summary_data)[1] <- "Variable"
