@@ -85,6 +85,9 @@ join_summary <- function(data){
 #' @export
 summary_logicals <- function(data){
 	logical_data <- data[, lapply(data, is.logical) == TRUE, with = FALSE]
+	# remove columns with only NAs
+	not_all_na <- function(x) any(!is.na(x))
+	logical_data <- logical_data %>% select_if(not_all_na)
 	if (nrow(logical_data) > 0){
 		summary_data <- data.frame(summary(logical_data)) %>%
 			dplyr::select(-Var1) %>%
