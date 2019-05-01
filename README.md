@@ -3,6 +3,7 @@
 ## Why I created this package?
 
 This package is an attempt to perform data exploration performed commonly during the initial phase any data science project. 
+
 The first thing we do when we get data is calculate basic statistics like mean, median, max to get a sense of what data we are looking at. `summary()` function is only useful for numeric and logical type variables since we cannot compute mean, median, etc. on character and logical variables. Also the functions' output is not in a tidy format. Therefore I built several functions to end up with a tidier summary of data (transform each variable as a row and each type of statistics as a column with its corresponding value). 
 
 - For each of the variables in the data calculate the count of distinct values. This is helpful for character (text) variables. 
