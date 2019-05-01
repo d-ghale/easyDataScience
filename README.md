@@ -29,28 +29,37 @@ Deciding which of the variables to use in our logistic regression model is also 
 ## How I created this package? 
 
 Step 1: Install "devtools" and "roxygen2" (roxygen2 provides an in-source documentation system that automatically generates R documentation files), and load them
+
 `install.packages(c("devtools", "roxygen2"))`
+
 `library("devtools", "roxygen2")`
 
 Step 2: Set a working directory (replace "parentDirectory") where you want to store your package  
+
 `setwd(parentDirectory)`
 
 Step 3: Create the package name (replace "easyDataScience")
+
 `devtools::create("easyDataScience")`
 
 Step 4: Set the package created in Step3 as working directory 
+
 `setwd("./easyDataScience")`
 
 Step 5: Create a folder named "R" and add your Rscript files, which contain functions you want to make available in the package
 
 Step 6: Test the document
+
 `check(document = FALSE)`
 
 Step 7: Convert roxygen comments to .Rd files.
+
 `devtools::document()`
 
 Step 8: Clear your Console and try installing your package  
+
 `install("easyDataScience")`
 
 Step 9: If you update Rscript run the code below to make the changes available  
+
 `document()`
