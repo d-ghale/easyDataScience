@@ -51,10 +51,16 @@ summary_dates <- function(data){
 	if (nrow(date_data) > 0) {
 		cols <- colnames(date_data)
 		dataPreparation::setColAsDate(date_data, cols = cols, format = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"))
-		summary_table <- summary(date_data)
-		data.frame(summary_table) %>%
-			tidyr::separate(Freq, c("type", "value"), "\\:(?=\\d)", extra = "merge") %>%
-			dplyr::select(- Var1)
+		# if converting columns into date format fails then they are stored as character.
+		# remove character columns since it does not produce useful statistics
+		summary_table <- data.frame(summary(date_data[, lapply(date_data, is.character) == FALSE, with = FALSE]))
+		if(nrow(summary_table) > 0){
+			summary_table %>%
+				tidyr::separate(Freq, c("type", "value"), "\\:(?=\\d)", extra = "merge") %>%
+				dplyr::select(- Var1)
+		} else {
+			data.frame()
+		}
 	} else {
 		date_data
 	}
@@ -137,7 +143,7 @@ tidy_summary <- function(data){
 		full_summary <- merge(dcount_data, numbers_data, by = "Variable", all = TRUE)
 	} else {
 		full_summary <- if ("None" %in% colnames(numbers_data) && "None" %in% colnames(logicals_data) ) {
-			merge(dcount_data, merge(logicals_data, numbers_data, by = c("Variable", "None"), all = TRUE) , by = "Variable", all = TRUE)
+			merge(dcount_data, merge(logicals_data, numbers_data, by = c("Variable", "None"), all = TRUE) , by = c("Variable", "None"), all = TRUE)
 		} else {
 			merge(dcount_data, merge(logicals_data, numbers_data, by = "Variable", all = TRUE) , by = "Variable", all = TRUE)
 		}
