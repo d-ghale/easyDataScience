@@ -5,7 +5,7 @@
 \title{Function replace NAs with 0 for integers and replace NAs with "missing" in character columns}
 \usage{
 handle_NA(data, set_num = 0, set_logical = FALSE,
-  set_char = "missing")
+  set_char = "missing", set_array)
 }
 \arguments{
 \item{set_num}{replace NULL values in numeric type by set_num}

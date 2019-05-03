@@ -4,7 +4,7 @@
 \alias{handle_name}
 \title{Function renames the column so that values such as NA are avoided, find colnames with "NA" in it, don't allow duplicate names}
 \usage{
-handle_name(data)
+handle_name(data, find_str = "NA", replace_str = "None")
 }
 \arguments{
 \item{data}{name}
