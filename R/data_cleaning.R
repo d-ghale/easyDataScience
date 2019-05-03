@@ -15,16 +15,22 @@ remove_duplicate_rows <- function( data ) {
 #' @return data without NULL values
 #' @export
 
-handle_NA <- function( data, set_num = 0, set_logical = FALSE, set_char = "missing" ) {
-	set_formula <- if(is.character(set_num) == TRUE) {
-		paste0("function(x)", set_num, "(x, na.rm = TRUE)", collapse = "")
+handle_NA <- function( data, set_num = 0, set_logical = FALSE, set_char = "missing", set_array) {
+	if(is.data.frame(data) == TRUE){
+		set_formula <- if(is.character(set_num) == TRUE) {
+			paste0("function(x)", set_num, "(x, na.rm = TRUE)", collapse = "")
+		} else {
+			set_num
+		}
+		dataPreparation::fastHandleNa(data, set_num = eval(parse(text = set_formula)),
+			set_logical = set_logical,
+			set_char = set_char)
+		data
 	} else {
-		set_num
+		data <- as.character(data)
+		data %>%
+			replace(., is.na(.), set_array)
 	}
-	dataPreparation::fastHandleNa(data, set_num = eval(parse(text = set_formula)),
-		set_logical = set_logical,
-		set_char = set_char)
-	data
 }
 
 #' Function to replace "NA" because NA as string is not treated as NA

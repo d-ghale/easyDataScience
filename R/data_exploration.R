@@ -75,7 +75,6 @@ summary_dates <- function(data){
 join_summary <- function(data){
 	summary_data <- rbind(summary_dates(data), summary_numbers(data)) %>%
 		tidyr::spread(type, value)
-	summary_data <- summary_data %>% replace(., is.na(.), "-")
 	names(summary_data)[1] <- "Variable"
 	summary_data <- data.frame(lapply(summary_data, trimws), stringsAsFactors = FALSE)
 	names(summary_data) <- gsub("[.]", "", names(summary_data))
@@ -93,7 +92,8 @@ summary_logicals <- function(data){
 	logical_data <- data[, lapply(data, is.logical) == TRUE, with = FALSE]
 	# remove columns with only NAs
 	not_all_na <- function(x) any(!is.na(x))
-	logical_data <- logical_data %>% select_if(not_all_na)
+	logical_data <- logical_data %>%
+										select_if(not_all_na)
 	if (nrow(logical_data) > 0){
 		summary_data <- data.frame(summary(logical_data)) %>%
 			dplyr::select(-Var1) %>%
@@ -113,18 +113,21 @@ summary_logicals <- function(data){
 #'
 #' @param data name
 #' @export
-handle_name <- function(data){
-	col_names <- colnames(data)[grepl("NA", colnames(data)) == TRUE]
-	colnames(data)[which(colnames(data) %in%  col_names)] <- "None"
-	None_data <- data.frame(data, check.names = TRUE)
-	col_names2 <- colnames(None_data)[grepl("None", colnames(None_data)) == TRUE]
-	cols_join <- None_data[, names(None_data) %in% col_names2]
-	if(length(col_names) > 1){
-		None <- as.vector(do.call(dplyr::coalesce, cols_join))
-		cbind(None_data[, - which(names(None_data) %in% col_names2)], None)
-	} else {
-		None_data
-	}
+handle_name <- function(data, find_str = "NA", replace_str = "None"){
+	col_names <- colnames(data)[grepl(find_str, colnames(data)) == TRUE]
+	if(length(col_names) > 0){
+		colnames(data)[which(colnames(data) %in%  col_names)] <- replace_str
+		None_data <- data.frame(data, check.names = TRUE)
+		col_names2 <- colnames(None_data)[grepl("None", colnames(None_data)) == TRUE]
+		cols_join <- None_data[, names(None_data) %in% col_names2]
+		if(length(col_names) > 1){
+			None <- as.vector(do.call(dplyr::coalesce, cols_join))
+			cbind(None_data[, - which(names(None_data) %in% col_names2)], None)
+		} else {
+			None_data
+		}
+	} else
+		data
 }
 
 #' Function to print tidy version of "summary" function
@@ -137,18 +140,24 @@ tidy_summary <- function(data){
 	dcount_data <- data.frame(summary_dcount(copy(data)))
 	numbers_data <- data.frame(handle_name(join_summary(copy(data))))
 	logicals_data <- data.frame(handle_name(summary_logicals(copy(data))))
-	if (nrow(logicals_data) == 0 & nrow(numbers_data) == 0) {
-		full_summary <- dcount_data
-	} else if (nrow(logicals_data) == 0) {
-		full_summary <- merge(dcount_data, numbers_data, by = "Variable", all = TRUE)
-	} else {
-		full_summary <- if ("None" %in% colnames(numbers_data) && "None" %in% colnames(logicals_data) ) {
-			merge(dcount_data, merge(logicals_data, numbers_data, by = c("Variable", "None"), all = TRUE) , by = c("Variable", "None"), all = TRUE)
-		} else {
-			merge(dcount_data, merge(logicals_data, numbers_data, by = "Variable", all = TRUE) , by = "Variable", all = TRUE)
-		}
+	if("None" %in% colnames(numbers_data)){
+		numbers_data[["None"]] <- handle_NA(numbers_data[["None"]], set_array = 0)
 	}
-	full_summary  %>%
+	if("None" %in% colnames(logicals_data)){
+		logicals_data[["None"]] <- handle_NA(logicals_data[["None"]], set_array = 0)
+	}
+	summary_data <- if (nrow(logicals_data) == 0 & nrow(numbers_data) == 0) {
+										dcount_data
+									} else if (nrow(logicals_data) == 0) {
+										merge(dcount_data, numbers_data, by = "Variable", all = TRUE)
+									} else if (nrow(numbers_data) == 0) {
+										merge(dcount_data, logicals_data, by = "Variable", all = TRUE)
+									} else {
+										merge(dcount_data, merge(logicals_data, numbers_data, by = "Variable", all = TRUE),
+													by = "Variable", all = TRUE)
+									}
+	summary_data <- handle_name(summary_data, find_str = "None")
+	summary_data %>%
 		replace(., is.na(.), "-")
 }
 
